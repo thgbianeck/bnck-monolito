@@ -12,6 +12,7 @@ export default class ProductAdmFacadeFactory {
       addUseCase: addProductUseCase,
       stockUseCase: checkStockUseCase,
     });
+
     return productFacade;
   }
 }
