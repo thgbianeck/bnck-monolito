@@ -1,48 +1,50 @@
-import Address from '../../../@shared/domain/value-object/address';
 import Id from '../../../@shared/domain/value-object/id.value-object';
 import UseCaseInterface from '../../../@shared/usecase/use-case.interface';
-import InvoiceItems from '../../domain/invoice-item.entity';
+import Address from '../../domain/address.vo';
 import Invoice from '../../domain/invoice.entity';
+import Product from '../../domain/product.entity';
 import InvoiceGateway from '../../gateway/invoice.gateway';
 import {
   GenerateInvoiceUseCaseInputDto,
   GenerateInvoiceUseCaseOutputDto,
-} from './generate-invoice.dto';
+} from './generate.usecase.dto';
 
 export default class GenerateInvoiceUseCase implements UseCaseInterface {
-  private _invoiceRepository: InvoiceGateway;
+  constructor(private readonly invoiceGateway: InvoiceGateway) {}
 
-  constructor(invoiceRepository: InvoiceGateway) {
-    this._invoiceRepository = invoiceRepository;
-  }
   async execute(
     input: GenerateInvoiceUseCaseInputDto
   ): Promise<GenerateInvoiceUseCaseOutputDto> {
-    const props = {
+    const invoice = this.createInvoice(input);
+    await this.invoiceGateway.create(invoice);
+
+    return this.toOutputDTO(invoice);
+  }
+
+  private createInvoice(input: GenerateInvoiceUseCaseInputDto): Invoice {
+    return new Invoice({
       name: input.name,
       document: input.document,
-      address: new Address(
-        input.street,
-        input.number,
-        input.complement,
-        input.city,
-        input.state,
-        input.zipCode
-      ),
+      address: new Address({
+        street: input.street,
+        number: input.number,
+        complement: input.complement,
+        city: input.city,
+        state: input.state,
+        zipCode: input.zipCode,
+      }),
       items: input.items.map(
         (item) =>
-          new InvoiceItems({
+          new Product({
             id: new Id(item.id),
             name: item.name,
             price: item.price,
           })
       ),
-    };
+    });
+  }
 
-    const invoice = new Invoice(props);
-
-    await this._invoiceRepository.add(invoice);
-
+  private toOutputDTO(invoice: Invoice): GenerateInvoiceUseCaseOutputDto {
     return {
       id: invoice.id.id,
       name: invoice.name,
@@ -53,8 +55,8 @@ export default class GenerateInvoiceUseCase implements UseCaseInterface {
       city: invoice.address.city,
       state: invoice.address.state,
       zipCode: invoice.address.zipCode,
-      items: invoice.items.map((item) => ({
-        id: item.id.id,
+      items: invoice.items.map((item: any) => ({
+        id: item.id,
         name: item.name,
         price: item.price,
       })),
