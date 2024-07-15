@@ -9,25 +9,24 @@ import {
 import { InvoiceModel } from './invoice.model';
 
 @Table({
-  tableName: 'invoice_items',
+  tableName: 'invoices_items',
   timestamps: false,
-  underscored: true,
 })
-export class InvoiceItemsModel extends Model {
+export class InvoiceItemModel extends Model {
   @PrimaryKey
   @Column({ allowNull: false })
   id: string;
+
+  @ForeignKey(() => InvoiceModel)
+  @Column({ allowNull: false })
+  invoice_id: string;
+
+  @BelongsTo(() => InvoiceModel)
+  invoice: InvoiceModel;
 
   @Column({ allowNull: false })
   name: string;
 
   @Column({ allowNull: false })
   price: number;
-
-  @ForeignKey(() => InvoiceModel)
-  @Column
-  invoiceId: string;
-
-  @BelongsTo(() => InvoiceModel)
-  invoice: InvoiceModel;
 }
