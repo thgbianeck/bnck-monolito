@@ -6,7 +6,6 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { InvoiceModel } from './invoice.model';
 
 @Table({
   tableName: 'invoices_items',
@@ -15,18 +14,18 @@ import { InvoiceModel } from './invoice.model';
 export class InvoiceItemModel extends Model {
   @PrimaryKey
   @Column({ allowNull: false })
-  id: string;
+  public declare id: string;
 
-  @ForeignKey(() => InvoiceModel)
+  @ForeignKey(() => require('./invoice.model').InvoiceModel)
   @Column({ allowNull: false })
-  invoice_id: string;
+  public declare invoice_id: string;
 
-  @BelongsTo(() => InvoiceModel)
-  invoice: InvoiceModel;
-
-  @Column({ allowNull: false })
-  name: string;
+  @BelongsTo(() => require('./invoice.model').InvoiceModel)
+  public declare invoice: ReturnType<typeof require>;
 
   @Column({ allowNull: false })
-  price: number;
+  public declare name: string;
+
+  @Column({ allowNull: false })
+  public declare price: number;
 }

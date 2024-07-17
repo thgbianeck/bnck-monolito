@@ -5,7 +5,6 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { InvoiceItemModel } from './item.model';
 
 @Table({
   tableName: 'invoices',
@@ -14,38 +13,38 @@ import { InvoiceItemModel } from './item.model';
 export class InvoiceModel extends Model {
   @PrimaryKey
   @Column({ allowNull: false })
-  id: string;
+  public declare id: string;
 
   @Column({ allowNull: false })
-  name: string;
+  public declare name: string;
 
   @Column({ allowNull: false })
-  document: string;
+  public declare document: string;
 
   @Column({ allowNull: false })
-  street: string;
+  public declare street: string;
 
   @Column({ allowNull: false })
-  number: string;
+  public declare number: string;
 
   @Column({ allowNull: false })
-  complement: string;
+  public declare complement: string;
 
   @Column({ allowNull: false })
-  city: string;
+  public declare city: string;
 
   @Column({ allowNull: false })
-  state: string;
+  public declare state: string;
 
   @Column({ allowNull: false })
-  zipcode: string;
+  public declare zipcode: string;
 
-  @HasMany(() => InvoiceItemModel)
-  items: InvoiceItemModel[];
-
-  @Column({ allowNull: false })
-  total: number;
+  @HasMany(() => require('./item.model').InvoiceItemModel)
+  public declare items: ReturnType<typeof require>[];
 
   @Column({ allowNull: false })
-  createdAt: Date;
+  public declare total: number;
+
+  @Column({ allowNull: false })
+  public declare createdAt: Date;
 }

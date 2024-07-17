@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
-import { app } from '../../express';
 import request from 'supertest';
 import ProductModel from '../../../modules/store-catalog/repository/product.model';
+import { app } from '../../express';
 
 describe('E2E test for checkout', () => {
   let sequelize: Sequelize;

@@ -7,23 +7,23 @@ import { Column, Model, PrimaryKey, Table } from 'sequelize-typescript';
 export class ProductModel extends Model {
   @PrimaryKey
   @Column({ allowNull: false })
-  id: string;
+  public declare id: string;
 
   @Column({ allowNull: false })
-  name: string;
+  public declare name: string;
 
   @Column({ allowNull: false })
-  description: string;
+  public declare description: string;
 
   @Column({ allowNull: false })
-  purchasePrice: number;
+  public declare purchasePrice: number;
 
   @Column({ allowNull: false })
-  stock: number;
+  public declare stock: number;
 
   @Column({ allowNull: false })
-  createdAt: Date;
+  public declare createdAt: Date;
 
   @Column({ allowNull: false })
-  updatedAt: Date;
+  public declare updatedAt: Date;
 }
